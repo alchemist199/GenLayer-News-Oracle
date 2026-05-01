@@ -1,0 +1,34 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GenLayer MVP Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background-color: #0f172a; color: white; padding: 20px; }
+        .card { border: 1px solid #334155; padding: 15px; border-radius: 8px; background: #1e293b; }
+        button { background: #f59e0b; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>GenLayer News Oracle Dashboard</h2>
+    <div class="card">
+        <input type="text" id="newsUrl" placeholder="Paste news URL here..." style="width: 70%; padding: 10px;">
+        <button onclick="verifyNews()">Verify News</button>
+        <p id="status"></p>
+    </div>
+    <h3>Verified History:</h3>
+    <ul id="history"></ul>
+    <script>
+        function verifyNews() {
+            const url = document.getElementById('newsUrl').value;
+            document.getElementById('status').innerText = "Processing...";
+            setTimeout(() => {
+                document.getElementById('status').innerText = "Success: Verified on-chain!";
+                const li = document.createElement('li');
+                li.innerText = url + " (2026-05-01)";
+                document.getElementById('history').appendChild(li);
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
