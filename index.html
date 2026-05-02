@@ -1,40 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>GenLayer Oracle // Monochrome Pulse</title>
+    <title>GenLayer Oracle // Minimalist</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Modern Monochrome Theme */
         body { font-family: 'JetBrains Mono', monospace; background-color: #000000; color: #ffffff; padding: 40px; margin: 0; }
         .container { max-width: 800px; margin: auto; text-align: center; }
-        h1 { color: #ffffff; font-size: 2rem; text-transform: uppercase; letter-spacing: 6px; margin-bottom: 5px; }
+        h1 { color: #ffffff; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 6px; margin-bottom: 5px; }
         .subtitle { color: #4b5563; font-size: 0.7rem; margin-bottom: 40px; letter-spacing: 1px; }
         
-        /* Pulse Logo (Pure CSS) */
-        #logo-container { display: none; margin: 40px auto; font-size: 2.5rem; font-weight: bold; letter-spacing: 3px; }
-        .pulse { animation: pulse-animation 1.5s infinite; color: #ffffff; }
-        @keyframes pulse-animation {
-            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); opacity: 1; }
-            70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); opacity: 0.7; }
-            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); opacity: 1; }
-        }
-
-        /* Input & Card */
-        .card { background: #000; border: 1px solid #333; padding: 40px; border-radius: 0px; transition: 0.3s; }
-        .card:hover { border-color: #fff; }
+        .card { background: #000; border: 1px solid #333; padding: 40px; border-radius: 0px; }
         input { background: #000; border: 1px solid #333; color: #fff; padding: 15px; width: 85%; margin-bottom: 25px; font-family: inherit; outline: none; border-radius: 0; }
         input:focus { border-color: #fff; }
         
-        /* White Button, Black Text */
-        button { background: #ffffff; border: 1px solid #ffffff; color: #000000; padding: 18px; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 90%; transition: 0.3s; font-size: 0.9rem; letter-spacing: 2px; }
-        button:hover { background: #000000; color: #ffffff; box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+        /* Solid White Button */
+        button { background: #ffffff; border: 1px solid #ffffff; color: #000000; padding: 18px; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 90%; transition: 0.2s; font-size: 0.9rem; letter-spacing: 2px; }
+        button:hover { background: #000000; color: #ffffff; }
         
-        /* Status & History */
         #status { margin-top: 25px; min-height: 20px; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
         .success { color: #ffffff; border: 1px solid #ffffff; padding: 10px; }
         .failed { color: #f87171; border: 1px solid #f87171; padding: 10px; background: rgba(248, 113, 113, 0.1); }
+        
         .history-box { margin-top: 50px; text-align: left; border-top: 1px dashed #333; padding-top: 30px; }
-        li { list-style: none; color: #6b7280; margin-bottom: 12px; font-size: 0.8rem; border-left: 2px solid #ffffff; padding-left: 15px; }
+        li { list-style: none; color: #6b7280; margin-bottom: 12px; font-size: 0.8rem; border-left: 1px solid #ffffff; padding-left: 15px; }
     </style>
 </head>
 <body>
@@ -42,50 +30,38 @@
         <h1>GenLayer News Oracle</h1>
         <p class="subtitle">INTELLIGENT CONTRACTS // ON-CHAIN VERIFICATION</p>
         
-        <div id="logo-container">
-            <span class="pulse">[ GL ]</span>
-        </div>
-
-        <div class="card" id="mainCard">
-            <input type="text" id="newsUrl" placeholder="Enter content for verification...">
+        <div class="card">
+            <input type="text" id="newsUrl" placeholder="ENTER URL OR CONTENT FOR VERIFICATION...">
             <button onclick="verifyNews()">[ Run Oracle Call ]</button>
             <div id="status"></div>
         </div>
 
         <div class="history-box">
-            <h3 style="color: #222; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 20px;">Verification Logs (IA)</h3>
+            <h3 style="color: #4b5563; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 20px;">On-Chain Logs</h3>
             <ul id="history"></ul>
         </div>
     </div>
+
     <script>
         function verifyNews() {
             const input = document.getElementById('newsUrl').value;
             const status = document.getElementById('status');
-            const logo = document.getElementById('logo-container');
-            const card = document.getElementById('mainCard');
             
-            // 1. Show Pulse Logo, Hide Card
-            logo.style.display = "block";
-            card.style.display = "none";
-            status.innerText = "";
+            status.innerText = "> INITIALIZING ORACLE...";
             status.className = "";
 
             setTimeout(() => {
-                // 2. Hide Logo, Show Card
-                logo.style.display = "none";
-                card.style.display = "block";
-
                 if (input.toLowerCase().includes("genlayer")) {
-                    status.innerText = "> Status: Success // Verdict On-Chain";
+                    status.innerText = "> STATUS: SUCCESS // VERDICT ON-CHAIN";
                     status.className = "success";
                     const li = document.createElement('li');
-                    li.innerText = input.substring(0, 50) + "... [Verified]";
+                    li.innerText = input.substring(0, 50) + "... [VERIFIED]";
                     document.getElementById('history').prepend(li);
                 } else {
-                    status.innerText = "> Status: Failed // Data Irrelevant";
+                    status.innerText = "> STATUS: FAILED // DATA REJECTED";
                     status.className = "failed";
                 }
-            }, 2500); // 2.5s pulsing time
+            }, 1000);
         }
     </script>
 </body>
