@@ -1,25 +1,27 @@
 # genlayer_oracle.py
-from genlayer import Contract, Web
+from genlayer import *
 
-class NewsVerifier(Contract):
+@gl.contract
+class NewsVerifier:
     def __init__(self):
-        self.verified_news = []
+        self.verified_news = gl.Array(gl.String)
 
-    def fetch_and_verify_news(self, url: str):
-        # Fitur Intelligent Smart Contract GenLayer untuk membaca web
-        web_data = Web.get(url)
+    @gl.public
+    def fetch_and_verify_news(self, url: gl.String):
+        # Menggunakan gl.nondet.web.get sesuai instruksi reviewer
+        # Dan dibungkus dengan gl.eq_principle.strict_eq
+        with gl.eq_principle.strict_eq:
+            response = gl.nondet.web.get(url)
+            content = response.text
         
         # Logika verifikasi sederhana
-        if "GenLayer" in web_data.text:
-            news_entry = {
-                "url": url,
-                "status": "Verified",
-                "timestamp": "2026-05-01"
-            }
-            self.verified_news.append(news_entry)
+        if "GenLayer" in content:
+            self.verified_news.append(url)
             return "News verified and stored on-chain."
         
         return "News not relevant."
 
-    def get_latest_news(self):
+    @gl.public
+    @gl.view
+    def get_latest_news(self) -> gl.Array(gl.String):
         return self.verified_news
