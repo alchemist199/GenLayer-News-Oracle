@@ -1,38 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>GenLayer Oracle // Monochrome Edition</title>
+    <title>GenLayer Oracle // Monochrome Spin</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Modern Monochrome & Electric Blue Theme */
-        body { font-family: 'JetBrains Mono', monospace; background-color: #000000; color: #ffffff; padding: 40px; }
+        /* Modern Monochrome Theme */
+        body { font-family: 'JetBrains Mono', monospace; background-color: #000000; color: #ffffff; padding: 40px; margin: 0; }
         .container { max-width: 800px; margin: auto; text-align: center; }
-        h1 { color: #ffffff; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 6px; margin-bottom: 5px; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
+        h1 { color: #ffffff; font-size: 2rem; text-transform: uppercase; letter-spacing: 6px; margin-bottom: 5px; }
         .subtitle { color: #4b5563; font-size: 0.7rem; margin-bottom: 40px; letter-spacing: 1px; }
-        .card { background: #080808; border: 1px solid #1a1a1a; padding: 40px; border-radius: 2px; box-shadow: 0 0 50px rgba(0,0,0,0.9); transition: border-color 0.3s; }
-        .card:hover { border-color: #0070f3; } /* subtle glow on hover */
-        input { background: #000; border: 1px solid #222; color: #fff; padding: 15px; width: 85%; margin-bottom: 25px; font-family: inherit; outline: none; transition: 0.3s; }
-        input:focus { border-color: #0070f3; }
+        .card { background: #000; border: 1px solid #333; padding: 40px; border-radius: 0px; box-shadow: none; transition: 0.3s; }
+        .card:hover { border-color: #fff; }
+        input { background: #000; border: 1px solid #333; color: #fff; padding: 15px; width: 85%; margin-bottom: 25px; font-family: inherit; outline: none; border-radius: 0; }
+        input:focus { border-color: #fff; }
+        
+        /* White Button, Black Text */
         button { background: #ffffff; border: 1px solid #ffffff; color: #000000; padding: 18px; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 90%; transition: 0.3s; font-size: 0.9rem; letter-spacing: 2px; }
-        button:hover { background: #0070f3; border-color: #0070f3; color: #ffffff; box-shadow: 0 0 30px rgba(0, 112, 243, 0.4); }
+        button:hover { background: #000000; color: #ffffff; box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+        
         #status { margin-top: 25px; min-height: 20px; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
-        .success { color: #ffffff; border: 1px solid #ffffff; padding: 10px; background: rgba(255, 255, 255, 0.05); }
-        .failed { color: #ef4444; border: 1px solid #ef4444; padding: 10px; background: rgba(239, 68, 68, 0.1); }
-        .history-box { margin-top: 50px; text-align: left; border-top: 1px dashed #1a1a1a; padding-top: 30px; }
-        li { list-style: none; color: #6b7280; margin-bottom: 12px; font-size: 0.8rem; border-left: 2px solid #0070f3; padding-left: 15px; }
+        .success { color: #ffffff; border: 1px solid #ffffff; padding: 10px; }
+        .failed { color: #f87171; border: 1px solid #f87171; padding: 10px; background: rgba(248, 113, 113, 0.1); }
+        .history-box { margin-top: 50px; text-align: left; border-top: 1px dashed #333; padding-top: 30px; }
+        li { list-style: none; color: #6b7280; margin-bottom: 12px; font-size: 0.8rem; border-left: 2px solid #ffffff; padding-left: 15px; }
+
+        /* Animation Section */
+        #loader { display: none; margin: 20px auto; }
+        .spin {
+            width: 50px; height: 50px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>GenLayer News Oracle</h1>
-        <p class="subtitle">INTELLIGENT CONTRACTS // ON-CHAIN NEWS VERIFICATION</p>
-        <div class="card">
-            <input type="text" id="newsUrl" placeholder="Enter URL or content for verification...">
-            <button onclick="verifyNews()">[ Initiate Oracle Call ]</button>
+        <p class="subtitle">INTELLIGENT CONTRACTS // ON-CHAIN VERIFICATION</p>
+        
+        <div id="loader">
+            <img src="https://genlayer.com/favicon.ico" alt="GenLayer Logo" class="spin">
+        </div>
+
+        <div class="card" id="mainCard">
+            <input type="text" id="newsUrl" placeholder="Enter content for verification...">
+            <button onclick="verifyNews()">[ Run Oracle Code ]</button>
             <div id="status"></div>
         </div>
+
         <div class="history-box">
-            <h3 style="color: #222; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 20px;">Verification Logs (IA)</h3>
+            <h3 style="color: #222; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 20px;">On-Chain History</h3>
             <ul id="history"></ul>
         </div>
     </div>
@@ -40,20 +59,31 @@
         function verifyNews() {
             const input = document.getElementById('newsUrl').value;
             const status = document.getElementById('status');
-            status.innerText = "> Running Intelligent Contract logic...";
+            const loader = document.getElementById('loader');
+            const card = document.getElementById('mainCard');
+            
+            // Show Loader, Hide Card
+            loader.style.display = "block";
+            card.style.display = "none";
+            status.innerText = "";
             status.className = "";
+
             setTimeout(() => {
+                // Hide Loader, Show Card
+                loader.style.display = "none";
+                card.style.display = "block";
+
                 if (input.toLowerCase().includes("genlayer")) {
-                    status.innerText = "> Status: Success // Consensus Reached";
+                    status.innerText = "> Success // Verdict On-Chain";
                     status.className = "success";
                     const li = document.createElement('li');
                     li.innerText = input.substring(0, 50) + "... [Verified]";
                     document.getElementById('history').prepend(li);
                 } else {
-                    status.innerText = "> Status: Failed // Data Irrelevant";
+                    status.innerText = "> Failed // Data Irrelevant";
                     status.className = "failed";
                 }
-            }, 1800);
+            }, 2500); // 2.5s spinning time
         }
     </script>
 </body>
